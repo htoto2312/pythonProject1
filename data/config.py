@@ -8,3 +8,7 @@ BOT_TOKEN ="5740888589:AAGtKQ5LQoFP9fCapM1egroWZ4jynKwop1w"  # Забираем 
 ADMINS = "1215043680"  # Тут у нас будет список из админов
 IP = "localhost"  # Тоже str, но для айпи адреса хоста
 
+PGUSER="postgres"
+PGPASSWORD="sasha987AA"
+DBNAME="htoto2"
+DBPORT=5432

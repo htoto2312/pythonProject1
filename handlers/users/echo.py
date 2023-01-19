@@ -2,9 +2,9 @@ from distutils.cmd import Command
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from keyboards.default import colors
-from loader import dp
+from loader import dp, db
 from states import Flow
-from keyboards.inline import dyn
+from keyboards.inline import dyn, buttons
 
 
 
@@ -15,19 +15,45 @@ async def bot_echo (message: types.Message):
 
 @dp.message_handler(conmands=['start'])
 async def bot_echo (message: types.Message):
-    await message.answer (f"For using our bot, you need to share your phone number first.", reply markup=phone)
+    await message.answer (f"For using our bot, you need to share your phone number first.", reply_markup=colors)
 
-@dp.message_handler(content-Types-types.ContentTypes. CONTACT) Casync def bot_echo (message: types.Message):
+@dp.message_handler(content_Types=types.ContentTypes.CONTACT)
+async def bot_echo (message: types.Message):
+    if message.contact.user_id!=message.from_id:
+        await message.answer(f"Wrong data. Try again.")
+    else:
 
-if message.contact.user_id != message.from_id: await message.answer(f"Wrong data. Try again.")
+        await Flow.RegisterState.set()
+        await message.answer(f'Welcome, {message.from_user.full_name}!')
+        await db.add_user(message.contact.user_id, message.contact.phone_number)
+@dp.message_handler(state=Flow.RegisterState,commands=['Data'])
+async def bot_echo(message: types.Message):
+    result=await db.get_users()
+    a=''
+    for i in result:
+        a+=f'id: {i[0]}, phone: {i[1]}.\n'
+    await message.answer(text=a, reply_markup=buttons(result))
 
-else:
-
-await Flow RegisterState.se)
-
-Саноат вета.
 
 
+
+
+
+
+
+
+
+
+
+
+#@dp.message_handler(content_types=types.ContentTypes.CONTACT)
+#async def bot_echo (message: types.Message):
+ #   if message.contact.user_id != message.from_id:
+  #      await message.answer (f"Wrong data. Try again.")
+   # else:
+    #    await Flow.RegisterState.set()
+     #   await message.answer (f"Welcome {message.from_user.full_name}!")
+      #  print(message.contact.phone_number)
 
 
 
